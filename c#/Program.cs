@@ -39,12 +39,47 @@
             return longestPrefixSuffix;
         }
 
-        public List<int> SeachIndexLocations( string substring )
+        public List<int> SeachIndexLocations( string pattern )
         {
             List<int> result = new List<int>();
-            int[] longestPrefixSuffix = generatePreprocessPattern(substring);
+            int[] longestPrefixSuffix = generatePreprocessPattern(pattern);
             Console.WriteLine("Longest prefix suffix: {0}", string.Join(',',longestPrefixSuffix));
+            //Get lengths
+            int mPatternLength = pattern.Length;
+            int nTextLength = this.textToSearch.Length;
+            //Get the index for the text and the pattern
+            int indexForText = 0;
+            int indexForPattern = 0;
 
+            while( indexForText < nTextLength )
+            {
+                if(pattern[indexForPattern] == textToSearch[indexForText])
+                {
+                    indexForPattern++;
+                    indexForText++;
+                }
+
+                if( indexForPattern == mPatternLength )
+                {
+                    result.Add(indexForText-indexForPattern);
+                    indexForPattern = longestPrefixSuffix[indexForPattern-1]; 
+                }
+                else if ( indexForText < nTextLength && 
+                    pattern[indexForPattern] != textToSearch[indexForText] ) 
+                {
+                    if( indexForPattern !=0  )
+                    {
+                        indexForPattern =longestPrefixSuffix[indexForPattern-1];
+                    }
+                    else
+                    {
+                        indexForText++;
+                    }
+                }
+
+
+            }    
+            
             return result;
         }
     };
@@ -56,7 +91,8 @@
             string pattern = "dsgwadsgz";
             string inputText = "adsgwadsxdsgwadsgz";
             KMPalgo kmp = new KMPalgo(inputText);
-            kmp.SeachIndexLocations(pattern);
+            List<int> result = kmp.SeachIndexLocations(pattern);
+            Console.WriteLine("Substring found : {0}",string.Join(",", result));
         }
     }
 }

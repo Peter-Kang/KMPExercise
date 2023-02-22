@@ -1,4 +1,12 @@
+#vscode
+launch.json
+tasks.json
+
 #python
 __pycache__/
 *.py[cod]
 *$py.class
+
+#c#
+bin/
+obj/
